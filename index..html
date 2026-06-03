@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>MallKitty</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:Segoe UI,sans-serif}
+body{background:#fff5f8}
+
+/* HERO */
+.hero{
+height:70vh;
+background:linear-gradient(rgba(255,105,180,.5),rgba(255,182,193,.5)),url("https://images.unsplash.com/photo-1483985988355-763728e1935b?w=1600");
+background-size:cover;
+background-position:center;
+display:flex;
+align-items:center;
+justify-content:center;
+text-align:center;
+color:#fff;
+}
+.hero h1{font-size:3.5rem}
+.hero p{margin-top:10px;font-size:1.2rem}
+
+/* NAV */
+nav{
+background:#ff99aa;
+padding:12px;
+display:flex;
+justify-content:center;
+position:sticky;
+top:0;
+z-index:50
+}
+nav a{color:#fff;margin:0 10px;text-decoration:none;font-weight:bold}
+
+/* SECCION */
+.seccion{text-align:center;padding:60px 20px}
+h2{color:#ff4f86;margin-bottom:20px}
+
+/* PRODUCTOS */
+.productos-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:20px;
+max-width:1100px;
+margin:auto
+}
+
+.producto-card{
+background:#fff;
+border-radius:15px;
+overflow:hidden;
+box-shadow:0 10px 25px rgba(0,0,0,.08);
+transition:.3s
+}
+.producto-card:hover{transform:translateY(-8px)}
+
+.producto-img{width:100%;height:220px;object-fit:cover}
+
+.producto-card h3{margin:10px}
+.desc{color:#777;font-size:.9rem}
+.precio{color:#ff4f86;font-weight:bold;font-size:1.2rem;margin:10px}
+
+.btn-agregar{
+width:100%;
+padding:12px;
+border:none;
+background:#ff4f86;
+color:#fff;
+font-weight:bold;
+cursor:pointer;
+transition:.3s
+}
+.btn-agregar:hover{background:#ff2f73}
+
+/* CARRO */
+.btn-ver-carrito{
+position:fixed;
+top:20px;
+right:20px;
+background:#ff2f73;
+color:#fff;
+padding:12px 18px;
+border:none;
+border-radius:30px;
+cursor:pointer;
+z-index:100;
+font-weight:bold
+}
+
+.carrito-lateral{
+position:fixed;
+right:-400px;
+top:0;
+width:360px;
+height:100%;
+background:#fff;
+box-shadow:-10px 0 25px rgba(0,0,0,.15);
+transition:.4s;
+padding:20px;
+display:flex;
+flex-direction:column;
+z-index:999
+}
+.carrito-lateral.active{right:0}
+
+.carrito-header{display:flex;justify-content:space-between;align-items:center}
+
+.lista-carrito{flex:1;overflow:auto;margin-top:20px;list-style:none}
+
+.item-carrito{
+display:flex;
+justify-content:space-between;
+padding:10px 0;
+border-bottom:1px solid #eee
+}
+
+.btn-eliminar{
+background:none;
+border:none;
+color:red;
+cursor:pointer
+}
+
+.total-contenedor{display:flex;justify-content:space-between;font-weight:bold;margin-top:10px}
+
+.btn-comprar{
+margin-top:15px;
+width:100%;
+padding:12px;
+background:#2ecc71;
+color:#fff;
+border:none;
+border-radius:8px;
+cursor:pointer
+}
+
+/* CONTACTO (AÑADIDO SIN CAMBIAR TU DISEÑO) */
+.contacto-box{
+max-width:500px;
+margin:auto;
+background:#fff;
+padding:20px;
+border-radius:15px;
+box-shadow:0 10px 25px rgba(0,0,0,.08);
+}
+
+.contacto-box input,
+.contacto-box textarea{
+width:100%;
+padding:12px;
+margin:8px 0;
+border:1px solid #eee;
+border-radius:10px;
+outline:none;
+}
+
+.contacto-box textarea{
+height:120px;
+resize:none;
+}
+
+.contacto-box button{
+width:100%;
+padding:12px;
+border:none;
+background:#ff4f86;
+color:#fff;
+font-weight:bold;
+border-radius:10px;
+cursor:pointer;
+}
+
+.contacto-box button:hover{background:#ff2f73}
+
+/* TOAST */
+#toast{
+position:fixed;
+bottom:20px;
+left:50%;
+transform:translateX(-50%);
+background:#ff4f86;
+color:#fff;
+padding:12px 20px;
+border-radius:30px;
+opacity:0;
+transition:.3s
+}
+#toast.show{opacity:1;bottom:40px}
+
+</style>
+</head>
+
+<body>
+
+<button class="btn-ver-carrito" onclick="toggleCarrito()">
+🛒<span id="contador-badge">0</span>
+</button>
+
+<div class="hero">
+<div>
+<h1>MallKitty</h1>
+<p>Moda linda, moderna y accesible 💖</p>
+</div>
+</div>
+
+<nav>
+<a href="#productos">Productos</a>
+<a href="#contacto">Contacto</a>
+</nav>
+
+<section class="seccion" id="productos">
+<h2>Productos</h2>
+
+<div class="productos-grid">
+
+<div class="producto-card">
+<img class="producto-img" src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=800">
+<h3>Vestido Rosa</h3>
+<p class="desc">Elegante y moderno</p>
+<p class="precio">S/.89.90</p>
+<button class="btn-agregar" onclick="agregarAlCarrito('Vestido Rosa',89.90)">Agregar</button>
+</div>
+
+<div class="producto-card">
+<img class="producto-img" src="https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=800">
+<h3>Bolso</h3>
+<p class="desc">Estilo premium</p>
+<p class="precio">S/.120</p>
+<button class="btn-agregar" onclick="agregarAlCarrito('Bolso',120)">Agregar</button>
+</div>
+
+<div class="producto-card">
+<img class="producto-img" src="https://images.unsplash.com/photo-1523170335258-f5ed11844a49?w=800">
+<h3>Reloj</h3>
+<p class="desc">Minimalista</p>
+<p class="precio">S/.75.50</p>
+<button class="btn-agregar" onclick="agregarAlCarrito('Reloj',75.5)">Agregar</button>
+</div>
+
+</div>
+</section>
+
+<!-- CONTACTO AÑADIDO -->
+<section class="seccion" id="contacto">
+<h2>Contáctanos 💖</h2>
+
+<div class="contacto-box">
+<form onsubmit="enviar(event)">
+<input id="nombre" type="text" placeholder="Tu nombre" required>
+<input id="correo" type="email" placeholder="Tu correo" required>
+<textarea id="mensaje" placeholder="Escribe tu mensaje..." required></textarea>
+<button type="submit">Enviar Mensaje</button>
+</form>
+</div>
+</section>
+
+<!-- CARRO -->
+<div class="carrito-lateral" id="carrito">
+<div class="carrito-header">
+<h3>Carrito</h3>
+<button onclick="toggleCarrito()">✖</button>
+</div>
+
+<ul id="lista-carrito" class="lista-carrito"></ul>
+
+<div class="total-contenedor">
+<span>Total</span>
+<span id="total">0</span>
+</div>
+
+<button class="btn-comprar" onclick="finalizarCompra()">Comprar</button>
+</div>
+
+<div id="toast">Agregado 🛒</div>
+
+<script>
+
+let carrito=JSON.parse(localStorage.getItem("carrito"))||[];
+
+function guardar(){
+localStorage.setItem("carrito",JSON.stringify(carrito));
+}
+
+function toggleCarrito(){
+document.getElementById("carrito").classList.toggle("active");
+}
+
+function agregarAlCarrito(n,p){
+carrito.push({nombre:n,precio:p});
+guardar();
+render();
+toast();
+}
+
+function eliminar(i){
+carrito.splice(i,1);
+guardar();
+render();
+}
+
+function render(){
+let lista=document.getElementById("lista-carrito");
+let total=document.getElementById("total");
+let cont=document.getElementById("contador-badge");
+
+lista.innerHTML="";
+let sum=0;
+
+carrito.forEach((p,i)=>{
+sum+=p.precio;
+lista.innerHTML+=`
+<li class="item-carrito">
+<span>${p.nombre}<br>S/.${p.precio}</span>
+<button onclick="eliminar(${i})">✖</button>
+</li>`;
+});
+
+total.innerText="S/."+sum.toFixed(2);
+cont.innerText=carrito.length;
+}
+
+function finalizarCompra(){
+alert("Compra realizada 💖");
+carrito=[];
+guardar();
+render();
+}
+
+function toast(){
+let t=document.getElementById("toast");
+t.classList.add("show");
+setTimeout(()=>t.classList.remove("show"),1500);
+}
+
+function enviar(e){
+e.preventDefault();
+alert("Gracias " + nombre.value + " 💖 te contactaremos pronto");
+nombre.value=correo.value=mensaje.value="";
+}
+
+render();
+
+</script>
+
+</body>
+</html>
